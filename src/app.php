@@ -2,9 +2,7 @@
 
 $app = new \Slim\Slim();
 
-//Create HTTP End points
-
-//Webservice Landing page.
+//end point landing page
 $app->get('/', function()
 {
 	require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'NewLogin.html');
@@ -14,32 +12,21 @@ $app->get('/', function()
 
 $app->post('/auth', function()
 {
-    //require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Common'.DIRECTORY_SEPARATOR.'Authentication'.DIRECTORY_SEPARATOR.'InMemoryUser.php');
-    $check = new \Common\Authentication\InMemoryUser();
-    $check->authenticate(htmlentities($_POST['username']),htmlentities($_POST['password']));
+
+    $verify = new \Common\Authentication\NameOfOurSQLlightThing(); //HERE WE NEED TO CHANGE TO NAME OF SQLlight THING
+    $verify->authenticate(htmlentities($_POST['username']),htmlentities($_POST['password']));
 });
 
+//Now endpoints for API
 
-
-
-//Create API End Points
-
-//Landing API page
-$app->get('/api/', function()
-{
-    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'API_Info.html');
-});
-
-
-
-//Authentication point for our webservice
+//point to authenticate web service
 $app->post('/api/auth',  function() use($app)
 {
-    $test = new \Common\Authentication\InMemoryUser();
+    $access = new \Common\Authentication\NameOfOurSQLlightThing(); //HERE WE NEED TO CHANGE TO NAME OF SQLlight THING
     $response = 401;
-    
-        $response = $test->authenticate(htmlentities($_POST['username']), $_POST['password']);
-   
+
+    $response = $access->authenticate(htmlentities($_POST['username']), htmlentities($_POST['password']));
+
     if($response == 200)
     {
         return $app->response->status(200);
@@ -50,7 +37,5 @@ $app->post('/api/auth',  function() use($app)
     }
     return $app->response->status(500);
 });
-
-
 
 $app->run();
