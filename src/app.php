@@ -24,7 +24,7 @@ $app->post('/auth', function()
 //Landing API page
 $app->get('/api/', function()
 {
-    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'API_Directions.html');
+    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'API_Info.html');
 });
 
 
@@ -32,7 +32,7 @@ $app->get('/api/', function()
 //Authentication point for our webservice
 $app->post('/api/auth', function()
 {
-    $test = new \Common\Authentication\InSqLite();
+    $test = new \Common\Authentication\InMemoryUser();
     $response = $test->authenticate(htmlentities($_POST['username']),htmlentities($_POST['password']));
     return $response;
 });
