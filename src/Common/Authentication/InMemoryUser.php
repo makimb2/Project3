@@ -16,15 +16,14 @@ namespace Common\Authentication;
 	    }
 
 
-	    public function authenticate()
-	    {
-	        if ($this->username !== 'CHADLYMEM') {
-	            return false;
-	        }
-	        if ($this->password !== '123POP') {
-	            return false;
-	        }
-	        return true;
-		}
+	    public function authenticate($username, $password)
+    {
+        if($username === "CHADLYMEM" && $password === "123P")
+        {
+            echo 'You have been authenticated '. $username;
+            return;
+        }
+        echo 'Access Denied';
+    }
 
 	}
