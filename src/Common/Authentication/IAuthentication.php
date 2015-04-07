@@ -4,5 +4,5 @@ namespace Common\Authentication;
 interface IAuthentication
 {
 
-    public function authenticate($username, $password);
+    public function authenticate();
 }
