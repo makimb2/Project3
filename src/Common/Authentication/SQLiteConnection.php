@@ -15,6 +15,27 @@ class SQLiteConnection
 {
     private $localUserName;
     private $localPassword;
+    private $localFirstName;
+    private $localLastName;
+
+    public function Enroll ($userName, $password,$firstName, $lastName)
+    {
+        $this->localUserName = $userName;
+        $this->localPassword = $password;
+        $this->localFirstName = $firstName;
+        $this->localLastName = $lastName;
+
+        $db = new PDO("sqlite:../src/Common/Authentication/SQLiteDB");
+
+        $sql="INSERT INTO Users (LoginID, Password) VALUES('$userName','$password') ";
+         $db->query($sql);
+        $generatedUserID=$db->lastInsertId();
+        //echo $db->lastInsertId();
+
+        $sql="INSERT INTO Consumer (UserID, FirstName, LastNAme) VALUES($generatedUserID,'$firstName','$lastName') ";
+        $db->query($sql);
+
+    }
 
 
     public function authenticate ($userName, $password)
