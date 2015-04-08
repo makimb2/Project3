@@ -1,0 +1,13 @@
+{
+    "require": {
+        "slim/slim": "~2.6",
+        "guzzle/guzzle": "~3.9"
+    },
+    "autoload":{
+        "psr-4":{
+            "Common\\Authentication\\":         "src/Common/Authentication",
+            "Views\\":                          "src/Views"
+        }
+    },
+    "target-dir": "src"
+}
