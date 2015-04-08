@@ -28,15 +28,18 @@ $app->post('/api',function () use($app){
     $userIn = $app->request->params('username');
     $passIn = $app->request->params('password');
 
-    $access = new \Common\Authentication\NAMEOF_OUR_SQLLIGHT_thing($userIn,$passIn); //change file here!
+    echo $userIn.' '.$passIn;
 
-    if($access->authenticate()!==1)//GENNA, this is assuming the authenticate function will return a true or false
+    $access = new \Common\Authentication\SQLiteConnection(); //change file here!
+
+    if(!$access->authenticate($userIn,$passIn))//GENNA, this is assuming the authenticate function will return a true or false
     {
         $app->response()->setStatus(401);
         $app->response()->getStatus();
+
         return json_encode($app->response()->header('Blah Blah something something', 401));
     }
-    if($access->authenticate()===1)
+    if($access->authenticate($userIn,$passIn))
     {
         $app->response()->setStatus(200);
         $app->response()->getStatus();
@@ -44,5 +47,25 @@ $app->post('/api',function () use($app){
         return json_encode($app->response()->header('SOmething about yay! you win! you authenticated. ', 200));
     }
 });
+
+$app->get('/access', function () {
+
+    $objSQLite = new Common\Authentication\SQLiteConnection();
+    $uuid = $objSQLite->GetTheUUID();
+
+    $response = array();
+
+    $response["error"] = false;
+    $response["message"] = "Your UUID is : $uuid";
+    echoRespnse(200, $response);
+});
+
+function echoRespnse($status_code, $response) {
+    $app = \Slim\Slim::getInstance();
+    // Http response code
+    $app->status($status_code);
+    echo json_encode($response);
+
+}
 
 $app->run();
