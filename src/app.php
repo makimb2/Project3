@@ -53,7 +53,7 @@ $app->post('/api',function () use($app){
         $app->response()->setStatus(401);
         $app->response()->getStatus();
 
-        return json_encode($app->response()->header('Blah Blah something something', 401));
+        return json_encode($app->response()->header('Blah Blah no access', 401));
     }
     if($access->authenticate($userIn,$passIn))
     {
@@ -63,6 +63,7 @@ $app->post('/api',function () use($app){
         return json_encode($app->response()->header('SOmething about yay! you win! you authenticated. ', 200));
     }
 });
+
 
 $app->get('/access', function () {
 

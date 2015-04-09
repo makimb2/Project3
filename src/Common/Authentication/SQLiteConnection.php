@@ -25,7 +25,7 @@ class SQLiteConnection
         $this->localFirstName = $firstName;
         $this->localLastName = $lastName;
 
-        $db = new PDO("sqlite:../src/Common/Authentication/SQLiteDB");
+        $db = new PDO("sqlite:SQLiteDB");
 
         $sql="INSERT INTO Users (LoginID, Password) VALUES('$userName','$password') ";
          $db->query($sql);
@@ -50,21 +50,21 @@ class SQLiteConnection
         $localArr=['',''];
         foreach($result as $row)
         {
-            $localArr[0] = $row['loginid'];
-            $localArr[1] =  $row['password'];
+            $localArr[0] = $row['LoginID'];
+            $localArr[1] =  $row['Password'];
         }
 
         if ($localArr[0]==='' && $localArr[1]==='' ) // no records returned with such Username
         {
-            return false;
+            return 0;
         }
         if ($localArr[0]===$this->localUserName && $localArr[1]!==$this->localPassword ) // password not match but username exist
         {
-            return false;
+            return 0;
         }
         if ($localArr[0]===$this->localUserName && $localArr[1]===$this->localPassword ) // User has been authenticated
         {
-            return true;
+            return 1;
         }
 
     }
