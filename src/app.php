@@ -5,7 +5,12 @@ $app = new \Slim\Slim();
 //end point landing page
 $app->get('/', function()
 {
-	require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'NewLogin.html');
+    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'NewLogin.html');
+});
+
+$app->get('/e', function()
+{
+    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'EnrollmentForm.html');
 });
 
 //End point to web authenticate user to our webservice.
@@ -22,13 +27,24 @@ $app->get('/', function()
 //point to authenticate web service
 
 
+$app->post('/enroll',function () use($app) {
+
+
+    $userIn = $app->request->params('username');
+    $passIn = $app->request->params('password');
+    $firstnameIn = $app->request->params('firstname');
+    $lastnameIn = $app->request->params('lastname');
+
+    $objSQLite = new \Common\Authentication\SQLiteConnection();
+    $objSQLite->Enroll($userIn,$passIn, $firstnameIn, $lastnameIn);
+});
+
 $app->post('/api',function () use($app){
 
 
     $userIn = $app->request->params('username');
     $passIn = $app->request->params('password');
 
-    echo $userIn.' '.$passIn;
 
     $access = new \Common\Authentication\SQLiteConnection(); //change file here!
 
@@ -37,7 +53,7 @@ $app->post('/api',function () use($app){
         $app->response()->setStatus(401);
         $app->response()->getStatus();
 
-        return json_encode($app->response()->header('Blah Blah something something', 401));
+        return json_encode($app->response()->header('Blah Blah no access', 401));
     }
     if($access->authenticate($userIn,$passIn))
     {
@@ -47,6 +63,7 @@ $app->post('/api',function () use($app){
         return json_encode($app->response()->header('SOmething about yay! you win! you authenticated. ', 200));
     }
 });
+
 
 $app->get('/access', function () {
 
